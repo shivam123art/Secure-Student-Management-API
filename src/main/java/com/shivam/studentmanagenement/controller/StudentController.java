@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import com.shivam.studentmanagenement.dto.StudentDTO;
 import com.shivam.studentmanagenement.model.Student;
 import com.shivam.studentmanagenement.service.StudentService;
@@ -17,6 +17,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/students")
+@SecurityRequirement(name = "bearerAuth")
 public class StudentController {
 
     @Autowired
@@ -73,7 +74,7 @@ public class StudentController {
     }
 
     @GetMapping("/name/{name}/marks/{marks}")
-    public List getStudentByNameAndMarks(
+    public List<Student> getStudentByNameAndMarks(
             @PathVariable String name,
             @PathVariable int marks) {
 
@@ -81,14 +82,14 @@ public class StudentController {
     }
 
     @GetMapping("/marks/greater/{marks}")
-    public List getStudentsWithMarksGreaterThan(
+    public List<Student> getStudentsWithMarksGreaterThan(
             @PathVariable int marks) {
 
         return service.getStudentsWithMarksGreaterThan(marks);
     }
 
     @GetMapping("/search/{name}")
-    public List searchStudentByName(
+    public List<Student> searchStudentByName(
             @PathVariable String name) {
 
         return service.searchStudentByName(name);
@@ -100,17 +101,17 @@ public class StudentController {
     }
 
     @GetMapping("/dto")
-    public List getAllStudentDTOs() {
+public List<StudentDTO> getAllStudentDTOs(){
         return service.getAllStudentDTOs();
     }
 
     @GetMapping("/page")
-    public Page getStudents(Pageable pageable) {
+public Page<Student> getStudents(Pageable pageable){
         return service.getStudents(pageable);
     }
 
     @GetMapping("/sort/{field}")
-    public List getStudentsSorted(
+    public List<Student> getStudentsSorted(
             @PathVariable String field) {
 
         return service.getStudentsSorted(field);

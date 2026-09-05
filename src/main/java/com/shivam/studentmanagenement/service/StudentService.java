@@ -1,5 +1,5 @@
 package com.shivam.studentmanagenement.service;
-
+import com.shivam.studentmanagenement.exception.StudentNotFoundException;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +39,11 @@ public Student addStudent(Student student) {
     public Student getStudentById(int id) {
 
     logger.info("Searching student with ID: {}", id);
+    return  repository.findById(id).orElseThrow(() ->{ 
+        logger.warn("Student not  found with ID :  {} ", id);
+        return new StudentNotFoundException("Student not  found with ID ; +id");} );
 
-    Student student = repository.findById(id).orElse(null);
-
-    if (student == null) {
-        logger.warn("Student not found with ID: {}", id);
-    }
-
-    return student;
+    
 }
 
     public Student updateStudent(int id, Student student) {
